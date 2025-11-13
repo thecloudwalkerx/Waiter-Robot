@@ -23,18 +23,18 @@ The robot’s behavior is managed in the `loop()` function, which continuously r
 
 - **Sensor Logic:**  
   - **Forward:** Only the Middle Sensor is active (`MS` ON, `LS` and `RS` OFF).  
-  - **Turn Left:** Left sensor ON, Right sensor OFF (MS may vary).  
-  - **Turn Right:** Right sensor ON, Left sensor OFF (MS may vary).  
+  - **Turn Left:** Left sensor ON, Right sensor OFF.  
+  - **Turn Right:** Right sensor ON, Left sensor OFF.  
   - **Sharp Left:** Middle and Left sensors ON, Right sensor OFF.  
   - **Sharp Right:** Middle and Right sensors ON, Left sensor OFF.  
   - **Stop:** All sensors ON, or no sensors ON.
 
 - **Movement Functions:**  
-  - Each function sets the motor driver pins for a brief duration and then stops using `stopBot()`.  
+  - Each function sets the motor driver pins for a brief duration and then calls `stopBot()` to halt the robot before the next action.  
   - This step-based control allows the robot to adjust direction based on the line detected by the sensors.
 
-- **Acceleration & Motor Control (Enhanced Version):**  
-  - Optional PWM-based speed ramping can be used to provide smooth acceleration and deceleration.  
+- **Optional Enhancements:**  
+  - PWM-based speed ramping can be added for smooth acceleration and deceleration.  
   - Differential motor speeds improve precision when navigating curves.  
   - Functions like `moveForward()`, `moveSlightLeft()`, `moveSlightRight()`, `sharpLeft()`, and `sharpRight()` can be tuned with speed parameters for smoother motion.
 
@@ -52,9 +52,15 @@ The robot’s behavior is managed in the `loop()` function, which continuously r
 
 ---
 
+## 🖼️ Circuit Diagram
+
+![Circuit Diagram](https://github.com/thecloudwalkerx/Waiter-Robot/blob/main/Circuit%20Diagram.png?raw=true)
+
+---
+
 ## 🔧 Future Enhancements
 
 - Implement continuous motion by removing `stopBot()` and `delay()` calls inside movement functions for smoother line following.  
 - Separate functions for straight, curved, and steep lines to optimize path tracking.  
 - Incorporate PID control for high-accuracy line-centering and turning.  
-- Add advanced features such as endpoint rotation and automatic return-to-start behavior.
+- Add advanced features such as endpoint rotation and automatic return-to-start behavior.  

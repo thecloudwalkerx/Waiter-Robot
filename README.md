@@ -1,78 +1,60 @@
-## Autonomous Waiter Line-Following Robot
+# EZBot: Basic Line Following Robot 🤖
 
-An Arduino-based intelligent line-following robot with a built-in “Waiter System” — capable of moving to a destination point, performing a 360° rotation, and automatically returning to its starting position.  
-This system combines precision motor control, adaptive speed, and state-driven automation for realistic and smooth motion.
-
----
-
-### 🚀 Features
-- Intelligent line tracking using three IR sensors (Left, Middle, Right)
-- Smooth acceleration and deceleration via PWM-based speed ramping
-- Adaptive differential steering for high-accuracy line following
-- 360° rotation system at destination point
-- Automatic return-to-base behavior
-- Modular and customizable control parameters (speed, rotation time, sensitivity)
+EZBot is an Arduino-based line-following robot designed to follow a predefined path using three Infrared (IR) line sensors and motor control. It implements basic movement functions to navigate straight, curved, and steep lines, while demonstrating precise step-based line-following behavior.
 
 ---
 
-### ⚙️ Hardware Requirements
-Arduino Uno or Nano  
-L298N / L293D motor driver module  
-2 DC motors (left and right drive wheels)  
-3 IR line sensors (Left, Middle, Right)  
-7–12V battery pack  
-Chassis and wheels (two-wheel drive base)
+## ✨ Project Idea & Implementation
+
+The goal of this project is to create a simple yet functional line-following robot. The robot uses three IR sensors — Left (LS), Middle (MS), and Right (RS) — to detect the line and determine the appropriate movement.
+
+Implemented movement functions:
+
+- **moveForward()** — moves straight when only the middle sensor detects the line.  
+- **turnLeft() / turnRight()** — adjusts the path when the line deviates to the sides.  
+- **sharpLeft() / sharpRight()** — handles steep curves detected by two sensors.  
+- **stopBot()** — stops the robot when all sensors detect the line or no sensors detect it.
+
+The robot’s behavior is managed in the `loop()` function, which continuously reads sensor inputs and executes the corresponding movement function. Each movement function sets motor directions and PWM speeds for a short duration and then stops, providing step-based control for basic line following.
 
 ---
 
-### 🧠 Working Principle
-1. The robot follows a black line using three infrared sensors.  
-2. When all sensors detect the line simultaneously, it recognizes the target point.  
-3. It then performs a 360° rotation, simulating a delivery turnaround.  
-4. After rotation, it switches to return mode, retracing the same path to its starting point.  
-5. Upon detecting all sensors on the line again, it stops in idle mode, completing the cycle.
+## 💻 Code Overview
+
+- **Sensor Logic:**  
+  - **Forward:** Only the Middle Sensor is active (`MS` ON, `LS` and `RS` OFF).  
+  - **Turn Left:** Left sensor ON, Right sensor OFF (MS may vary).  
+  - **Turn Right:** Right sensor ON, Left sensor OFF (MS may vary).  
+  - **Sharp Left:** Middle and Left sensors ON, Right sensor OFF.  
+  - **Sharp Right:** Middle and Right sensors ON, Left sensor OFF.  
+  - **Stop:** All sensors ON, or no sensors ON.
+
+- **Movement Functions:**  
+  - Each function sets the motor driver pins for a brief duration and then stops using `stopBot()`.  
+  - This step-based control allows the robot to adjust direction based on the line detected by the sensors.
+
+- **Acceleration & Motor Control (Enhanced Version):**  
+  - Optional PWM-based speed ramping can be used to provide smooth acceleration and deceleration.  
+  - Differential motor speeds improve precision when navigating curves.  
+  - Functions like `moveForward()`, `moveSlightLeft()`, `moveSlightRight()`, `sharpLeft()`, and `sharpRight()` can be tuned with speed parameters for smoother motion.
 
 ---
 
-### 💻 Code Overview
-The logic operates as a finite state machine with four operational modes:
-1. **FORWARD_RUN** → Normal line-following motion  
-2. **ROTATING** → Performs the 360° spin  
-3. **RETURN_RUN** → Follows line in reverse direction back to start  
-4. **IDLE** → System stop after return
+## ⚙️ Hardware Requirements
 
-All motion behaviors (forward, turn, rotation) use PWM-based speed control with adaptive acceleration to ensure stability.
-
----
-
-### 📂 Repository Contents
-waiter_bot.ino — Main Arduino code  
-/media — Demo videos and photos  
-README.md — Project documentation
+- Arduino Uno or compatible board  
+- L298N or L293D Motor Driver  
+- 2 DC motors (left and right drive wheels)  
+- 3 IR line sensors (Left, Middle, Right)  
+- Chassis with wheels  
+- Battery pack or external power supply  
+- Jumper wires
 
 ---
 
-### 📹 Demonstration
-After uploading, include your videos here or embed YouTube links.  
-Example:  
-[![Watch the video](https://img.youtube.com/vi/VIDEO_ID/0.jpg)](https://youtube.com/watch?v=VIDEO_ID)
+## 🔧 Future Enhancements
 
----
-
-### 🧩 Customization
-- Adjust `rotationDuration` for a precise 360° spin (2000–3000 ms range).  
-- Modify `baseSpeed`, `maxSpeed`, and `turnBoost` to match motor power and track sharpness.  
-- Tune `accelStep` and `adjustInterval` to control responsiveness and smoothness.
-
----
-
-### 🔧 Future Enhancements
-- PID-controlled steering for advanced precision  
-- Auto-calibration for rotation duration based on sensor feedback  
-- Bluetooth or IoT remote command integration
-
----
-
-### 📜 License
-This project is released under the MIT License.  
-You are free to use, modify, and distribute with attribution.
+- Implement continuous motion by removing `stopBot()` and `delay()` calls inside movement functions for smoother line following.  
+- Separate functions for straight, curved, and steep lines to optimize path tracking.  
+- Incorporate PID control for high-accuracy line-centering and turning.  
+- Add advanced features such as endpoint rotation and automatic return-to-start behavior.
